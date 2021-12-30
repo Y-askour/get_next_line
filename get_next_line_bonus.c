@@ -6,11 +6,11 @@
 /*   By: yaskour <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/24 14:18:10 by yaskour           #+#    #+#             */
-/*   Updated: 2021/12/24 14:19:14 by yaskour          ###   ########.fr       */
+/*   Updated: 2021/12/29 15:31:43 by yaskour          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*new_remain(char *line, char *remain)
 {
