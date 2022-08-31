@@ -3,112 +3,127 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaskour <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: yaskour <yaskour@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/24 14:18:10 by yaskour           #+#    #+#             */
-/*   Updated: 2021/12/29 15:31:43 by yaskour          ###   ########.fr       */
+/*   Created: 2022/08/30 11:51:53 by yaskour           #+#    #+#             */
+/*   Updated: 2022/08/31 10:20:12 by yaskour          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include "get_next_line.h"
+#include <stdio.h>
 
-#include "get_next_line_bonus.h"
-
-char	*new_remain(char *line, char *remain)
+int	read_from_fd(int fd, char **str)
 {
-	int		i;
-	int		j;
-	char	*new;
-
-	i = 0;
-	j = 0;
-	if (is_nl(line) == 0)
-	{
-		free(remain);
-		return (NULL);
-	}
-	while (line[j])
-	{
-		if (line[j++] == '\n')
-			break ;
-	}
-	if (line[j] == 0)
-	{
-		free(remain);
-		return (0);
-	}
-	new = ft_strdup(line + j);
-	free(remain);
-	return (new);
-}
-
-char	*new_line(char *line)
-{
-	int		len;
-	int		i;
-	char	*new;
-
-	len = 0;
-	i = 0;
-	if (is_nl(line) == 0)
-		return (line);
-	while (line[len] != '\n')
-		len++;
-	len++;
-	new = (char *) malloc(len + 1);
-	len = 0;
-	while (line[len] != '\n')
-		new[i++] = line[len++];
-	new[i++] = '\n';
-	new[i] = 0;
-	free(line);
-	return (new);
-}
-
-char	*read_file(int fd, int *end)
-{
-	char	*readed;
-	int		nb;
+	int		n_bytes;
 	char	*tmp;
 
-	readed = (char *) malloc(BUFFER_SIZE + 1);
-	nb = read(fd, readed, BUFFER_SIZE);
-	if (nb <= 0)
+	*str = malloc(sizeof(char) * BUFFER_SIZE);
+	n_bytes = read(fd,*str, BUFFER_SIZE);
+	if (n_bytes <= 0)
 	{
-		*end = 1;
-		free(readed);
+		free(*str);
+		return (n_bytes);
+	}
+	if (n_bytes < BUFFER_SIZE)
+	{
+		str[0][n_bytes] = 0;
+		tmp = ft_strdup(*str);
+		free(*str);
+		*str = tmp;
+	}
+	str[0][n_bytes] = 0;
+	return (n_bytes);
+}
+
+char	*join_readed(int fd, char *str)
+{
+	int		n_bytes;
+	char	*readed;
+	char	*final_line;
+
+	n_bytes = 1;
+	final_line = str;
+	while (n_bytes > 0)
+	{
+		n_bytes = read_from_fd(fd, &readed);
+		if (n_bytes <= 0)
+		{
+			if (ft_strlen(final_line))
+				return (final_line);
+			free(str);
+			return (NULL);
+		}
+		final_line = ft_strjoin(final_line, readed);
+		if (check_new_line(final_line))
+			break ;
+	}
+	return (final_line);
+}
+
+char	*new_line(char *newline)
+{
+	int		i;
+	char	*tmp;
+
+	i = 0;
+	if (!new_line_loop(newline, &i))
+		return (0);
+	if (newline[i] == 0)
+		return (newline);
+	tmp = malloc(sizeof(char) * i + 2);
+	i = 0;
+	while (newline[i] && newline[i] != '\n')
+	{
+		tmp[i] = newline[i];
+		i++;
+	}
+	if (newline[i] == '\n')
+		tmp[i++] = '\n';
+	tmp[i] = '\0';
+	free(newline);
+	return (tmp);
+}
+
+char	*new_remain(char *str)
+{
+	char	*remain;
+	int		i;
+
+	i = 0;
+	if (!str)
+		return (0);
+	while (str[i])
+	{
+		if (str[i] == '\n')
+			break ;
+		i++;
+	}
+	if (!str[i++])
 		return (NULL);
-	}
-	if (nb < BUFFER_SIZE)
-	{
-		readed[nb] = 0;
-		tmp = ft_strdup(readed);
-		free(readed);
-		return (tmp);
-	}
-	readed[BUFFER_SIZE] = 0;
-	return (readed);
+	remain = ft_strdup(&str[i]);
+	return (remain);
 }
 
 char	*get_next_line(int fd)
 {
+	char		*newline;
+	char		*final_line;
+	char		*old_remain[1024];
 	static char	*remain[1024];
-	char		*line;
-	int			end;
 
-	end = 0;
 	if (fd < 0)
 		return (NULL);
+	if (fd > 1024)
+		return (NULL);
 	if (remain[fd])
-		line = ft_strdup(remain[fd]);
+		newline = ft_strdup(remain[fd]);
 	else
-		line = read_file(fd, &end);
-	while (1)
-	{
-		if (is_nl(line) || end)
-		{
-			remain[fd] = new_remain(line, remain[fd]);
-			return (new_line(line));
-		}
-		line = ft_strjoin(line, read_file(fd, &end));
-	}
-	return (NULL);
+		newline = ft_strdup("");
+	newline = join_readed(fd, newline);
+	final_line = new_line(newline);
+	old_remain[fd] = remain[fd];
+	remain[fd] = new_remain(newline);
+	if (old_remain[fd])
+		free(old_remain[fd]);
+	return (final_line);
 }

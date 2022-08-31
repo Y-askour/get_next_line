@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaskour <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: yaskour <yaskour@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/24 14:18:45 by yaskour           #+#    #+#             */
-/*   Updated: 2021/12/24 14:22:47 by yaskour          ###   ########.fr       */
+/*   Created: 2022/08/30 11:52:01 by yaskour           #+#    #+#             */
+/*   Updated: 2022/08/31 10:14:58 by yaskour          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line_bonus.h"
+#include "get_next_line.h"
 
 int	ft_strlen(char *str)
 {
@@ -70,18 +70,29 @@ char	*ft_strjoin(char *s1, char *s2)
 	return (str);
 }
 
-int	is_nl(char *s)
+int	check_new_line(char	*str)
 {
 	int	i;
 
 	i = 0;
-	if (s == NULL)
-		return (0);
-	while (s[i])
+	while (str[i])
 	{
-		if (s[i] == '\n')
+		if (str[i] == '\n')
 			return (1);
 		i++;
 	}
 	return (0);
+}
+
+int	new_line_loop(char *newline, int *i)
+{
+	if (!newline)
+		return (0);
+	while (newline[*i])
+	{
+		if (newline[*i] == '\n')
+			break ;
+		*i = *i + 1;
+	}
+	return (1);
 }

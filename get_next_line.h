@@ -3,28 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaskour <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: yaskour <yaskour@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/24 14:17:54 by yaskour           #+#    #+#             */
-/*   Updated: 2021/12/24 14:17:55 by yaskour          ###   ########.fr       */
+/*   Created: 2022/08/30 11:52:08 by yaskour           #+#    #+#             */
+/*   Updated: 2022/08/31 10:14:19 by yaskour          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
-
 # include <stdlib.h>
-# include <fcntl.h>
-# include <sys/types.h>
-# include <sys/uio.h>
 # include <unistd.h>
 
 char	*get_next_line(int fd);
-char	*ft_strjoin(char *s1, char *s2);
-int		is_nl(char *s);
-char	*ft_strdup(char *src);
 int		ft_strlen(char *str);
-char	*new_line(char *line);
-char	*new_remain(char *line, char *remain);
-char	*read_file(int fd, int *end);
+char	*ft_strjoin(char *s1, char *s2);
+char	*ft_strdup(char *src);
+int		new_line_loop(char *newline, int *i);
+int		check_new_line(char	*str);
 #endif
