@@ -6,7 +6,7 @@
 /*   By: yaskour <yaskour@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 11:52:01 by yaskour           #+#    #+#             */
-/*   Updated: 2022/09/01 19:59:56 by yaskour          ###   ########.fr       */
+/*   Updated: 2022/09/01 20:20:25 by yaskour          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	while (s1[j])
 		str[i++] = s1[j++];
 	j = 0;
-	while (s2[j])
+	while (s2[j] && str[i])
 		str[i++] = s2[j++];
 	str[i] = 0;
 	free(s1);
