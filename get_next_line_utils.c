@@ -6,7 +6,7 @@
 /*   By: yaskour <yaskour@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 11:52:01 by yaskour           #+#    #+#             */
-/*   Updated: 2022/08/31 10:14:58 by yaskour          ###   ########.fr       */
+/*   Updated: 2022/09/01 19:59:56 by yaskour          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ int	check_new_line(char	*str)
 	int	i;
 
 	i = 0;
+	if (!str)
+		return (1);
 	while (str[i])
 	{
 		if (str[i] == '\n')
