@@ -6,7 +6,7 @@
 /*   By: yaskour <yaskour@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 11:52:01 by yaskour           #+#    #+#             */
-/*   Updated: 2022/09/01 20:20:25 by yaskour          ###   ########.fr       */
+/*   Updated: 2022/09/02 16:35:53 by yaskour          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	ft_strlen(char *str)
 	len = 0;
 	if (str == NULL)
 		return (0);
-	while (*str++)
+	while (str[len])
 		len++;
 	return (len);
 }
@@ -62,11 +62,10 @@ char	*ft_strjoin(char *s1, char *s2)
 	while (s1[j])
 		str[i++] = s1[j++];
 	j = 0;
-	while (s2[j] && str[i])
+	while (s2[j])
 		str[i++] = s2[j++];
 	str[i] = 0;
 	free(s1);
-	free(s2);
 	return (str);
 }
 

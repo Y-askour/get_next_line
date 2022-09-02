@@ -6,7 +6,7 @@
 /*   By: yaskour <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 08:24:15 by yaskour           #+#    #+#             */
-/*   Updated: 2022/09/01 19:59:37 by yaskour          ###   ########.fr       */
+/*   Updated: 2022/09/02 16:45:38 by yaskour          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line.h"
@@ -20,5 +20,8 @@ int	main(void)
 
 	fd = open("get_next_line.c", O_RDWR);
 	while ((str = get_next_line(fd)))
+	{
 		printf("%s",str);
+		free(str);
+	}
 }
