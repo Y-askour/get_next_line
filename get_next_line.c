@@ -6,40 +6,50 @@
 /*   By: yaskour <yaskour@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 11:51:53 by yaskour           #+#    #+#             */
-/*   Updated: 2022/09/02 16:52:43 by yaskour          ###   ########.fr       */
+/*   Updated: 2022/09/02 17:20:44 by yaskour          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line.h"
 #include <stdio.h>
+
+int	loop_body(int n_bytes, char	**readed, char	**line)
+{
+	char	*tmp;
+
+	if (n_bytes < BUFFER_SIZE)
+	{
+		readed[0][n_bytes] = 0;
+		tmp = ft_strdup(readed[0]);
+		free(readed[0]);
+		readed[0] = tmp;
+	}
+	readed[0][n_bytes] = 0;
+	line[0] = ft_strjoin(line[0], readed[0]);
+	if (check_new_line(line[0]))
+	{
+		free(readed[0]);
+		return (1);
+	}
+	return (0);
+}
 
 char	*read_and_join(int fd, char *remain)
 {
 	char	*readed;
 	int		n_bytes;
 	char	*line;
-	char	*tmp;
 
 	if (remain)
 		line = ft_strdup(remain);
 	else
 		line = ft_strdup("");
 	readed = malloc(sizeof(char) * BUFFER_SIZE + 1);
-	while ((n_bytes = read(fd, readed, BUFFER_SIZE)) > 0)
+	n_bytes = 1;
+	while (n_bytes > 0)
 	{
-		if (n_bytes < BUFFER_SIZE)
-		{
-			readed[n_bytes] = 0;
-			tmp = ft_strdup(readed);
-			free(readed);
-			readed = tmp;
-		}
-		readed[n_bytes] = 0;
-		line = ft_strjoin(line, readed);
-		if (check_new_line(line))
-		{
-			free(readed);
+		n_bytes = read(fd, readed, BUFFER_SIZE);
+		if (loop_body(n_bytes, &readed, &line))
 			return (line);
-		}
 	}
 	if (ft_strlen(line))
 	{
