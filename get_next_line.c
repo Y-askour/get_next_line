@@ -6,13 +6,13 @@
 /*   By: yaskour <yaskour@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 11:51:53 by yaskour           #+#    #+#             */
-/*   Updated: 2022/09/02 16:45:19 by yaskour          ###   ########.fr       */
+/*   Updated: 2022/09/02 16:52:43 by yaskour          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line.h"
 #include <stdio.h>
 
-char	*read_and_join(int fd,char	*remain)
+char	*read_and_join(int fd, char *remain)
 {
 	char	*readed;
 	int		n_bytes;
@@ -24,7 +24,7 @@ char	*read_and_join(int fd,char	*remain)
 	else
 		line = ft_strdup("");
 	readed = malloc(sizeof(char) * BUFFER_SIZE + 1);
-	while((n_bytes = read(fd,readed,BUFFER_SIZE)) > 0)
+	while ((n_bytes = read(fd, readed, BUFFER_SIZE)) > 0)
 	{
 		if (n_bytes < BUFFER_SIZE)
 		{
@@ -34,7 +34,7 @@ char	*read_and_join(int fd,char	*remain)
 			readed = tmp;
 		}
 		readed[n_bytes] = 0;
-		line = ft_strjoin(line,readed);
+		line = ft_strjoin(line, readed);
 		if (check_new_line(line))
 		{
 			free(readed);
@@ -99,9 +99,10 @@ char	*get_next_line(int fd)
 {
 	char		*newline;
 	static char	*remain;
+
 	if (fd < 0 || !BUFFER_SIZE)
 		return (NULL);
-	newline = read_and_join(fd,remain);
+	newline = read_and_join(fd, remain);
 	free(remain);
 	remain = new_remain(newline);
 	return (new_line(newline));
